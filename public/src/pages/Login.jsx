@@ -2,51 +2,45 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import { useNavigate, Link } from "react-router-dom";
-import Logo from "../assets/logo.svg";
+import { loginRoute } from "../utils/APIRoutes";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { loginRoute } from "../utils/APIRoutes";
 
 export default function Login() {
   const navigate = useNavigate();
   const [values, setValues] = useState({ username: "", password: "" });
-  const toastOptions = {
-    position: "bottom-right",
-    autoClose: 8000,
-    pauseOnHover: true,
-    draggable: true,
-    theme: "dark",
-  };
+
   useEffect(() => {
     if (localStorage.getItem(process.env.REACT_APP_LOCALHOST_KEY)) {
       navigate("/");
     }
   }, []);
 
-  const handleChange = (event) => {
-    setValues({ ...values, [event.target.name]: event.target.value });
+  const toastOptions = {
+    position: "bottom-right",
+    autoClose: 4000,
+    theme: "dark",
+  };
+
+  const handleChange = (e) => {
+    setValues({ ...values, [e.target.name]: e.target.value });
   };
 
   const validateForm = () => {
     const { username, password } = values;
-    if (username === "") {
-      toast.error("Email and Password is required.", toastOptions);
-      return false;
-    } else if (password === "") {
-      toast.error("Email and Password is required.", toastOptions);
+    if (!username || !password) {
+      toast.error("Enter username & password", toastOptions);
       return false;
     }
     return true;
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     if (validateForm()) {
       const { username, password } = values;
-      const { data } = await axios.post(loginRoute, {
-        username,
-        password,
-      });
+      const { data } = await axios.post(loginRoute, { username, password });
+
       if (data.status === false) {
         toast.error(data.msg, toastOptions);
       }
@@ -55,7 +49,6 @@ export default function Login() {
           process.env.REACT_APP_LOCALHOST_KEY,
           JSON.stringify(data.user)
         );
-
         navigate("/");
       }
     }
@@ -63,101 +56,112 @@ export default function Login() {
 
   return (
     <>
-      <FormContainer>
-        <form action="" onSubmit={(event) => handleSubmit(event)}>
-          <div className="brand">
-            <img src={Logo} alt="logo" />
-            <h1>snappy</h1>
-          </div>
-          <input
-            type="text"
-            placeholder="Username"
-            name="username"
-            onChange={(e) => handleChange(e)}
-            min="3"
-          />
-          <input
-            type="password"
-            placeholder="Password"
-            name="password"
-            onChange={(e) => handleChange(e)}
-          />
-          <button type="submit">Log In</button>
+      <Container>
+        <div className="card">
+          <h1>Chattrix 💬</h1>
+          <p className="subtitle">Welcome back</p>
+
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Username"
+              name="username"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+            />
+            <button type="submit">Login</button>
+          </form>
+
           <span>
-            Don't have an account ? <Link to="/register">Create One.</Link>
+            Don’t have an account? <Link to="/register">Register</Link>
           </span>
-        </form>
-      </FormContainer>
+        </div>
+      </Container>
       <ToastContainer />
     </>
   );
 }
 
-const FormContainer = styled.div`
+const Container = styled.div`
   height: 100vh;
   width: 100vw;
+  background: linear-gradient(135deg, #0f172a, #020617);
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  gap: 1rem;
   align-items: center;
-  background-color: #131324;
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    justify-content: center;
-    img {
-      height: 5rem;
-    }
-    h1 {
-      color: white;
-      text-transform: uppercase;
-    }
+  font-family: "Segoe UI", sans-serif;
+
+  .card {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.06);
+    padding: 3rem;
+    border-radius: 20px;
+    width: 350px;
+    text-align: center;
+    box-shadow: 0 0 40px rgba(0,0,0,0.4);
+    animation: fadeIn 0.6s ease;
+  }
+
+  h1 {
+    color: #a78bfa;
+    margin-bottom: 0.5rem;
+  }
+
+  .subtitle {
+    color: #aaa;
+    margin-bottom: 2rem;
   }
 
   form {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    background-color: #00000076;
-    border-radius: 2rem;
-    padding: 5rem;
+    gap: 1rem;
   }
+
   input {
-    background-color: transparent;
-    padding: 1rem;
-    border: 0.1rem solid #4e0eff;
-    border-radius: 0.4rem;
-    color: white;
-    width: 100%;
-    font-size: 1rem;
-    &:focus {
-      border: 0.1rem solid #997af0;
-      outline: none;
-    }
-  }
-  button {
-    background-color: #4e0eff;
-    color: white;
-    padding: 1rem 2rem;
+    padding: 0.9rem;
+    border-radius: 8px;
     border: none;
+    outline: none;
+    background: rgba(255,255,255,0.1);
+    color: white;
+  }
+
+  button {
+    padding: 0.9rem;
+    border-radius: 8px;
+    border: none;
+    background: #7c3aed;
+    color: white;
     font-weight: bold;
     cursor: pointer;
-    border-radius: 0.4rem;
-    font-size: 1rem;
-    text-transform: uppercase;
-    &:hover {
-      background-color: #4e0eff;
-    }
+    transition: 0.3s;
   }
+
+  button:hover {
+    background: #6d28d9;
+    transform: scale(1.03);
+  }
+
   span {
-    color: white;
-    text-transform: uppercase;
-    a {
-      color: #4e0eff;
-      text-decoration: none;
-      font-weight: bold;
-    }
+    display: block;
+    margin-top: 1.5rem;
+    color: #bbb;
+  }
+
+  a {
+    color: #a78bfa;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 `;

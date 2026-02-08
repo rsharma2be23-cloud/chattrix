@@ -64,20 +64,20 @@ export default function Chat() {
 const Container = styled.div`
   height: 100vh;
   width: 100vw;
+  background: radial-gradient(circle at top, #020617, #020617);
   display: flex;
-  flex-direction: column;
   justify-content: center;
-  gap: 1rem;
   align-items: center;
-  background-color: #131324;
+
   .container {
-    height: 85vh;
-    width: 85vw;
-    background-color: #00000076;
+    height: 92vh;
+    width: 92vw;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(25px);
     display: grid;
     grid-template-columns: 25% 75%;
-    @media screen and (min-width: 720px) and (max-width: 1080px) {
-      grid-template-columns: 35% 65%;
-    }
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(124,58,237,0.4);
+    overflow: hidden;
   }
 `;
