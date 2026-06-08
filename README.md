@@ -1,68 +1,124 @@
-# Snappy - Chat Application 
-Snappy is chat application build with the power of MERN Stack. You can find the tutorial [here](https://www.youtube.com/watch?v=otaQKODEUFs)
+# Chattrix
 
+Chattrix is a real-time chat application built with the MERN stack (MongoDB, Express, React, Node.js) and Socket.IO. It supports user registration, login, avatar selection, one-to-one messaging, and live message delivery.
 
-![login page](./images/snappy_login.png)
+## Features
 
-![home page](./images/snappy.png)
+- User signup and login
+- Set profile avatar before chatting
+- Real-time messaging using Socket.IO
+- Persistent chat history stored in MongoDB
+- Responsive React frontend
+- Backend API with Express and MongoDB
+- Docker Compose setup for easy local deployment
 
-## Installation Guide
+## Tech Stack
 
-### Requirements
-- [Nodejs](https://nodejs.org/en/download)
-- [Mongodb](https://www.mongodb.com/docs/manual/administration/install-community/)
+- Frontend: React, React Router, Styled Components, Axios, Socket.IO Client
+- Backend: Node.js, Express, MongoDB, Mongoose, Socket.IO
+- Dev tooling: Nodemon, React Scripts
+- Deployment: Docker, Docker Compose
 
-Both should be installed and make sure mongodb is running.
-### Installation
+## Project Structure
 
-#### First Method
-```shell
-git clone https://github.com/koolkishan/chat-app-react-nodejs
-cd chat-app-react-nodejs
+- `public/` – React frontend application
+- `server/` – Express backend API and Socket.IO server
+- `docker-compose.yml` – Docker services for frontend and backend
+- `images/` – project screenshots
+
+## Requirements
+
+- Node.js
+- MongoDB
+- Docker and Docker Compose (optional, for containerized deployment)
+
+## Setup
+
+### 1. Clone the repository
+
+```powershell
+git clone https://github.com/your-username/chattrix.git
+cd chattrix
 ```
-Now rename env files from .env.example to .env
-```shell
-cd public
-mv .env.example .env
-cd ..
+
+### 2. Configure environment variables
+
+#### Backend
+
+```powershell
 cd server
-mv .env.example .env
-cd ..
+copy .env.example .env
 ```
 
-Now install the dependencies
-```shell
+Open `server/.env` and update `MONGO_URL` as needed.
+
+#### Frontend
+
+```powershell
+cd ..\public
+copy .env.example .env
+```
+
+### 3. Install dependencies
+
+```powershell
+cd ..\server
+npm install
+cd ..\public
+npm install
+```
+
+### 4. Run locally
+
+Start the backend:
+
+```powershell
 cd server
-yarn
-cd ..
+npm start
+```
+
+Start the frontend in a separate terminal:
+
+```powershell
 cd public
-yarn
+npm start
 ```
-We are almost done, Now just start the development server.
 
-For Frontend.
-```shell
-cd public
-yarn start
+Open the browser at `http://localhost:3000`.
+
+## Environment Variables
+
+### `server/.env.example`
+
+```text
+PORT=5000
+MONGO_URL="mongodb://localhost:27017/chat"
 ```
-For Backend.
 
-Open another terminal in folder, Also make sure mongodb is running in background.
-```shell
-cd server
-yarn start
+### `public/.env.example`
+
+```text
+REACT_APP_LOCALHOST_KEY="chat-app-current-user"
 ```
-Done! Now open localhost:3000 in your browser.
 
-#### Second Method
-- This method requires docker and docker-compose to be installed in your system.
-- Make sure you are in the root of your project and run the following command.
+## Docker Setup
 
-```shell
+If you prefer Docker, use the existing `docker-compose.yml`:
+
+```powershell
 docker compose build --no-cache
-```
-after the build is complete run the containers using the following command
-```shell
 docker compose up
 ```
-now open localhost:3000 in your browser.
+
+Then open `http://localhost:3000`.
+
+## Notes
+
+- The backend listens on port `5000` by default.
+- The frontend uses `3000` by default.
+- MongoDB must be available for the backend to connect successfully.
+
+## Screenshots
+
+![login page](./images/snappy_login.png)
+![home page](./images/snappy.png)
